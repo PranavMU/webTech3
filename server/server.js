@@ -2,27 +2,26 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userController = require("./user/routes/user");
 const multer = require("multer")();
-const app = express();
+
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
+const dotenv = require('dotenv');
 const cors = require("cors");
 const uprotectedRoutes = ["/user/login", "/user/signup"];
-
+const bodyParser = require("body-parser");
+const app = express();
 //server
 
 //body parser middleware
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(cors())
+dotenv.config();
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use(multer.array());
-app.use(cors());
+app.use(cors())
 
 
 //Database connection
-mongoose.connect("mongodb+srv://prnv:prnv123@cluster0.cszthhf.mongodb.net/web3?retryWrites=true&w=majority", (data)=> {
-    console.log("Successfully connected to db");
-}, (err)=> {
-    console.log(err)
-});
+mongoose.connect(process.env.DATABASE);
 
 app.get("/", (req, res)=> {
     res.send("Backend works")

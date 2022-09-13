@@ -27,15 +27,22 @@ router.post("/signup", async (req, res)=> {
     if(await checkExistingUser(req.body.username)) {
         res.status(400).send("Username exist. Please try with different username");
     } else {
-        generatePasswordHash(req.body.password).then((passwordHash)=> {
-            signupModal.create({username: req.body.username,phone_number: req.body.phoneNumber,
-                            password: passwordHash})
-                            .then(()=> { 
-                                res.status(200).send(`${req.body.username} added successfully`); 
-                            }).catch((err)=> {
-                                res.status(400).send(err.message)
-            })
-        });
+        if(req.body.phoneNumber.length < 11){
+            res.status(400).send("PhoneNumber invalid")
+        }else{
+
+            generatePasswordHash(req.body.password).then((passwordHash)=> {
+                signupModal.create({username: req.body.username,phone_number: req.body.phoneNumber,
+                                password: passwordHash})
+                                .then(()=> { 
+                                    res.status(200).send(`${req.body.username} added successfully`); 
+                                }).catch((err)=> {
+                                    res.status(400).send(err.message)
+                })
+            });
+        }
+
+     
     }
     
 });
