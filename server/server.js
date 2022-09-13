@@ -31,10 +31,6 @@ app.get("/", (req, res)=> {
 app.use("/user", userController);
 
 //middleware
-app.listen(3001, (err)=> {
-    if(!err) {
-        console.log("Server started at port 3001")
-    } else {
-        console.log(err);
-    }
+app.listen(process.env.PORT,()=>{
+    console.log("server started @ : " +process.env.PORT);
 });
